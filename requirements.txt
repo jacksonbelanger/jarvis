@@ -3,3 +3,5 @@ pyaudio
 SpeechRecognition
 openai-whisper
 numpy
+elevenlabs
+dotenv

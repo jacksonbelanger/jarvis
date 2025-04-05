@@ -8,6 +8,18 @@ import time # Added for potential sleeps
 import whisper # Added for Whisper
 import numpy as np # Added for Whisper audio processing
 import io # Added for in-memory audio file
+import requests
+from elevenlabs import stream
+from elevenlabs.client import ElevenLabs
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+client = ElevenLabs(
+    api_key=os.getenv("ELEVENLABS_API_KEY")
+)
 
 # Replace '/path/to/jarvis.ppn' with the actual path to your custom keyword file.
 keyword_paths = ['jarvis_wake_word.ppn']
@@ -106,6 +118,22 @@ try:
             if query:
                 # Process the query (add your logic here)
                 print(f"Processing query: {query}")
+                # hit n8n endpoint
+                response = requests.post(
+                    "http://localhost:5678/webhook/jarvis",
+                    json={"query": query}
+                )
+                print(f"N8N response: {response.json()}")
+
+                # text to speech
+                audio_stream = client.text_to_speech.convert_as_stream(
+                    text=response.json()['output'],
+                    voice_id="RwsRBpO5E3SozIPdOsTc",
+                    model_id="eleven_flash_v2_5",
+                    optimize_streaming_latency=4
+                )
+
+                stream(audio_stream)
                 
                 pass # Replace pass with your command processing logic
             # Removed break statement to listen continuously
