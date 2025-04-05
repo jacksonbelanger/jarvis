@@ -1,3 +1,5 @@
 pvporcupine
 pyaudio
-audioop
+SpeechRecognition
+openai-whisper
+numpy
