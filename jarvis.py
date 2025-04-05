@@ -59,7 +59,7 @@ def listen_for_query():
         # Use the same sample rate Porcupine uses for consistency
         with sr.Microphone(sample_rate=porcupine.sample_rate) as source:
             # Adjust for ambient noise dynamically
-            r.adjust_for_ambient_noise(source, duration=0.5)
+            r.adjust_for_ambient_noise(source, duration=0.1)
 
             # Listen for audio - use default pause threshold initially
             # Using a timeout ensures it doesn't wait forever if no speech detected
@@ -100,6 +100,21 @@ def listen_for_query():
     print("Listening for wake word 'Jarvis'...") # Re-prompt after listening attempt
     return query
 
+def initialize_audio_stream():
+    """Initialize a new PyAudio stream for wake word detection."""
+    global audio_stream
+    if audio_stream is not None and hasattr(audio_stream, 'is_active') and audio_stream.is_active():
+        audio_stream.stop_stream()
+        audio_stream.close()
+        
+    audio_stream = pa.open(
+        rate=porcupine.sample_rate,
+        channels=1,
+        format=pyaudio.paInt16,
+        input=True,
+        frames_per_buffer=porcupine.frame_length
+    )
+    return audio_stream
 
 print("Listening for wake word 'Jarvis'...")
 
@@ -125,18 +140,26 @@ try:
                 )
                 print(f"N8N response: {response.json()}")
 
-                # text to speech
-                audio_stream = client.text_to_speech.convert_as_stream(
+                # text to speech - use a different variable for the speech stream
+                tts_stream = client.text_to_speech.convert_as_stream(
                     text=response.json()['output'],
                     voice_id="RwsRBpO5E3SozIPdOsTc",
                     model_id="eleven_flash_v2_5",
                     optimize_streaming_latency=4
                 )
 
-                stream(audio_stream)
+                # Make sure audio_stream is closed before playing speech
+                if audio_stream is not None and hasattr(audio_stream, 'is_active') and audio_stream.is_active():
+                    audio_stream.stop_stream()
+                    audio_stream.close()
+                    audio_stream = None
+
+                # Play the speech
+                stream(tts_stream)
                 
-                pass # Replace pass with your command processing logic
-            # Removed break statement to listen continuously
+                # After speech playback, reinitialize audio stream for wake word detection
+                audio_stream = initialize_audio_stream()
+                print("Listening for wake word 'Jarvis'...")
 
         # Optional: Add a small sleep to reduce CPU usage slightly
         # time.sleep(0.01)
@@ -147,9 +170,9 @@ except KeyboardInterrupt:
 
 finally:
     # Clean up resources.
-    if audio_stream is not None and audio_stream.is_active():
+    if audio_stream is not None and hasattr(audio_stream, 'is_active') and audio_stream.is_active():
         audio_stream.stop_stream()
-    if audio_stream is not None:
+    if audio_stream is not None and hasattr(audio_stream, 'close'):
         audio_stream.close()
     if pa is not None:
         pa.terminate()
