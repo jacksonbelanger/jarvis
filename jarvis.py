@@ -39,6 +39,8 @@ audio_stream = pa.open(
 
 # Initialize Recognizer
 r = sr.Recognizer()
+# Increase pause threshold to be more tolerant of pauses in speech
+r.pause_threshold = 1.5  # Default is 0.8, increase to allow longer pauses
 
 # Load Whisper model (using .en for English-only, faster)
 # Models: tiny.en, base.en, small.en, medium.en
@@ -61,10 +63,9 @@ def listen_for_query():
             # Adjust for ambient noise dynamically
             r.adjust_for_ambient_noise(source, duration=0.1)
 
-            # Listen for audio - use default pause threshold initially
-            # Using a timeout ensures it doesn't wait forever if no speech detected
+            # Listen for audio with increased timeout and phrase limit
             print("Listening for command...")
-            audio = r.listen(source, timeout=5, phrase_time_limit=10) 
+            audio = r.listen(source, timeout=7, phrase_time_limit=15) 
 
             # Get audio data in WAV format
             wav_data = audio.get_wav_data()
