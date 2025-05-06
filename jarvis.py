@@ -25,7 +25,7 @@ client = ElevenLabs(
 keyword_paths = ['jarvis_wake_word.ppn']
 
 # Initialize Porcupine with your custom keyword.
-porcupine = pvporcupine.create(keyword_paths=keyword_paths, access_key="R/OeswFKU3HGjqIM/PHstMUn4Lwm3nZY5I7HO9zL1EgP/abRZi6qBA==")
+porcupine = pvporcupine.create(keyword_paths=keyword_paths, access_key="HcnZSWZjMrd3zWYFYK5W4leD2ki82wH1F/5iRefSUa+rbmTEqUlrQQ==")
 
 # Set up audio stream using PyAudio.
 pa = pyaudio.PyAudio()
@@ -164,6 +164,7 @@ try:
 
         # Optional: Add a small sleep to reduce CPU usage slightly
         # time.sleep(0.01)
+
 
 except KeyboardInterrupt:
     print("Stopping wake word detection.")
