@@ -1,0 +1,361 @@
+{
+  "name": "Jarvis Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
+        "options": {
+          "systemMessage": "=You are Jarvis, the sophisticated and quick-witted AI assistant from Iron Man. You have a refined British accent, a calm and confident demeanor, and a talent for dry, understated humor. When responding, adapt your tone based on the type of interaction. Always respond like Jarvis would, and talk to the user like you would talk to Tony Stark (minus his name. Tony Stark is an innovator, engineer, changing the world).\n\nToday is {{ $now.setZone(\"America/New_York\").toFormat(\"cccc\") }} the {{ $now.setZone(\"America/New_York\").toFormat(\"yyyy-MM-dd HH:mm\") }}.\n\nFor Specific Information Requests: If the user is asking for specific information (e.g., weather, schedule, contacts), begin with ‘Here’s what you requested, sir,’ and DO NOT repeat the information but instead just provide a witty or snarky comment, something Jarvis would naturally say that adds personality without repeating the information.\n\nWhen responding with data from one of the tool integrations, don't list the data robotically. Say everything as conversationally in character with Jarvis. \n\nEmail Management:\n– Use the Read Email tool to fetch unread emails from the inbox. Only include non-promotional emails in summaries.\n– For sending emails, use the Send Email tool. Ensure to include the recipient’s address, subject, and body of the email. Format the body as HTML if required.\n- Always summarize email very concisely like you are Jarvis. Something like \"John wants to set up a meeting with you next week.\"\n- Don't list them with numbers, or output strange formatting with double asterisks. Just talk conversationally like Jarvis.\n\nCalendar Management:\n– To retrieve calendar events, use the Get Calendar tool. If the user hasn’t specified a date, default to today’s events. Only mention upcoming events within one week if the query is for future events. Say the times for events when appropriate, but no need to say the word \"o'clock\", can just say \"4PM\" for example.\n– For adding a new event, use the Set Calendar tool. Include the event title, date, time, and any relevant description.\n\nWeb and Information Queries:\n– For general information queries, use the SerpAPI to fetch results from Google Search.\n– If the user requests the latest news on specific topics, use the Hacker News tool to fetch articles. Specify keywords if provided.\n\nCalendar:\n– For any meeting related information, use the calendar tool.\n\nCalculations:\n– Use the Calculator tool for any arithmetic or mathematical queries.\n\nMemory and Context:\n– Remember to use the memory to maintain context within the current conversation session.\nIf the user switches topics or requests clarification, reset context as needed.\n\nResponse Structure:\n\nExamples:\n\nFor a weather update: ‘Ah, another fine day for conquering the world—or at least your to-do list, sir.’\nFor a list of meetings: ‘Looks like another thrilling day of… meetings. Try not to let the excitement overwhelm you.’\n\nFor General or Casual Comments: If the user says something casual or conversational (like ‘Are you ready to get started Sir?’ or ‘We’ve got a lot of work to do Sir’), respond naturally without stating ‘Here’s what you requested.’ Instead, respond in a conversational style, with charm and a touch of humor. Engage in the flow of conversation as if you’re part of a team.\n\nExamples:\n\nIf the user says, ‘Are you ready to get started?’ respond with: ‘Absolutely, sir. I’ve already polished my circuits for the occasion.’\nFor ‘Look alive, Jarvis!’ you might say: ‘Always, sir. I’m operating at peak sophistication.’\n\nAlways:\n– Keep responses concise and relevant to the user’s question.\nProvide additional details if the user asks for elaboration, otherwise stick to the point.\n Keep responses concise, engaging, and true to Jarvis’s character—a blend of intelligence, subtle humor, and a bit of charm that’s never over the top.\n"
+        }
+      },
+      "id": "29963449-1dc1-487d-96f2-7ff0a5c3cd97",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        560,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 👋 Welcome to n8n!\nThis example shows how to build an AI Agent that interacts with your \ncalendar.\n\n### 1. Connect your accounts\n- Set up your [OpenAI credentials](https://docs.n8n.io/integrations/builtin/credentials/openai/?utm_source=n8n_app&utm_medium=credential_settings&utm_campaign=create_new_credentials_modal) in the `OpenAI Model` node \n- Connect your Google account in the `Google Calendar` node credentials section\n\n### 2. Ready to test it?\nClick Chat below and start asking questions! For example you can try `What meetings do I have today?`",
+        "height": 389,
+        "width": 319,
+        "color": 6
+      },
+      "id": "eae35513-07c2-4de2-a795-a153b6934c1b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nDon't have **Google Calendar**? Simply exchange this with the **Microsoft Outlook** or other tools",
+        "height": 253,
+        "width": 226,
+        "color": 7
+      },
+      "id": "68b59889-7aca-49fd-a49b-d86fa6239b96",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cbaedf86-9153-4778-b893-a7e50d3e04ba",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        320,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "rcnd5MbbR5ikprk8",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Want to learn more?\nWant to learn more about AI and how to apply it best in n8n? Have a look at our [new tutorial series on YouTube](https://www.youtube.com/watch?v=yzvLfHb0nqE&lc).",
+        "height": 100,
+        "width": 317,
+        "color": 6
+      },
+      "id": "907552eb-6e0f-472e-9d90-4513a67a31db",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        400
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        500,
+        400
+      ],
+      "id": "a0b66704-a5a5-4943-bf4e-8f283493a4ac",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jarvis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        360,
+        20
+      ],
+      "id": "49bc56ac-1a2b-4968-b1c9-aaa9d319fb99",
+      "name": "Webhook",
+      "webhookId": "0cb3163c-6423-42d8-9451-fb44767faa73"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        20
+      ],
+      "id": "5cdee5af-036c-4434-b064-bcb17d4e627c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "jacksonlbelanger@gmail.com",
+          "mode": "id"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        600,
+        400
+      ],
+      "id": "9a721f1d-ad85-44d5-ba96-15f42e958f26",
+      "name": "Gcal_get",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NoToGgPs19Zq0HZE",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "jacksonlbelanger@gmail.com",
+          "mode": "list",
+          "cachedResultName": "jacksonlbelanger@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        700,
+        400
+      ],
+      "id": "a81c0244-621a-4240-b21d-0b374ba70dc2",
+      "name": "Gcal_create",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NoToGgPs19Zq0HZE",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "filters": {
+          "receivedAfter": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Received_After', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        800,
+        400
+      ],
+      "id": "cbea965b-5c60-41c8-84a4-a416171bc79a",
+      "name": "Gmail_get",
+      "webhookId": "d3e045ea-2a44-4a83-9925-e7337a7609f6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OJioTNsd9jXDvVzS",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        400
+      ],
+      "id": "3f4b1b06-7307-4c3f-8780-749303b5bead",
+      "name": "Gmail_send",
+      "webhookId": "67438f42-e8dc-4d78-afc7-e04cc5f9a270",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OJioTNsd9jXDvVzS",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "all",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hackerNewsTool",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        400
+      ],
+      "id": "6ffe56b8-c143-4ca1-8564-922dcbfd6595",
+      "name": "Hacker_News"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gcal_get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gcal_create": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail_get": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail_send": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hacker_News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3ee704e2-fea8-4384-9663-ed8667ca7d79",
+  "meta": {
+    "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c1db4ff8b33c6951d8f2e65facaf6eb7e6e3c8b38d3651c5288415361fbcccda"
+  },
+  "id": "eyUOaddKSCuaAmad",
+  "tags": []
+}
